@@ -1,10 +1,12 @@
 package com.npasquali.dbfileloader.fileloaders;
 
+import com.google.inject.internal.util.Lists;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
 /**
  * @author Nicola Pasquali
@@ -14,8 +16,11 @@ public class CSVFileLoaderTest {
 
     @Before
     public void setUp() {
-        csvFileLoader = new CSVFileLoader();
-        csvFileLoader.setBasePath("test-files");
+        List<String> files = Lists.newArrayList();
+        files.add("test.csv");
+        files.add("missing.csv");
+
+        csvFileLoader = new CSVFileLoader("test-files", files);
     }
 
     @Test
@@ -39,15 +44,6 @@ public class CSVFileLoaderTest {
             csvFileLoader.assertThatFileExists("missing.csv");
         } catch (FileNotFoundException e) {
             Assert.assertEquals(e.getMessage(), "Could not find missing.csv in " + csvFileLoader.getBasePath());
-        }
-    }
-
-    @Test
-    public void shouldRetrieveHeader() {
-        try {
-            csvFileLoader.printHeaders("test.csv");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }

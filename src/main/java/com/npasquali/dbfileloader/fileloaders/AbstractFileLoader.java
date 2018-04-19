@@ -12,14 +12,16 @@ import java.io.FileReader;
 public abstract class AbstractFileLoader {
     protected Logger logger;
     protected FileReader fileReader;
-    private String basePath;
+    protected String basePath;
 
     public String assertThatFileExists(final String fileName) throws FileNotFoundException {
         logger.debug("Checking if " + fileName + " file exists");
 
         String pathToFile = buildPathToFile(fileName);
+        System.out.println(pathToFile);
+
         final File file = new File(pathToFile);
-        if(!(file.exists() && file.isFile())) {
+        if (!(file.exists() && file.isFile())) {
             throw new FileNotFoundException("Could not find " + fileName + " in " + basePath);
         }
         return pathToFile;
