@@ -19,12 +19,13 @@ public class CSVFileLoader extends AbstractFileLoader {
         logger = Logger.getLogger(CSVFileLoader.class);
 
         this.basePath = basePath;
+        initializeFiles(filesName);
+    }
 
+    private void initializeFiles(List<String> filesName) {
         csvParser = new CSVParser();
         files = Lists.newArrayList();
         filesName.forEach(this::createAndAddCSVFile);
-        System.out.println(files.get(0).getHeaders());
-        System.out.println(files.get(0).getRecords());
     }
 
     private void createAndAddCSVFile(String fileName) {
