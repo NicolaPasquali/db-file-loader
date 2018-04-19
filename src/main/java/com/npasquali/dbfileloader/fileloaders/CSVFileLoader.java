@@ -3,6 +3,7 @@ package com.npasquali.dbfileloader.fileloaders;
 import com.google.inject.internal.util.Lists;
 import com.npasquali.dbfileloader.models.CSVFile.CSVFile;
 import com.npasquali.dbfileloader.parsers.CSVParser;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.sql2o.Connection;
 import org.sql2o.Query;
@@ -52,11 +53,18 @@ public class CSVFileLoader extends AbstractFileLoader {
 
             files.forEach(file -> {
                 file.getRecords().forEach(record -> {
-                            query
-                                    .addParameter("firstname", record.get(0))
-                                    .addParameter("lastname", record.get(1))
-                                    .addParameter("age", Integer.valueOf(record.get(2)))
-                                    .addToBatch();
+                            for (int i = 0; i < file.getHeaders().size(); i++) {
+                                Object value = record.get(i);
+
+                                if (NumberUtils.isDigits(record.get(i))) {
+                                    value = Integer.valueOf(record.get(i));
+                                } else if (NumberUtils.isNumber(record.get(i))) {
+                                    value = Double.valueOf(record.get(i));
+                                }
+
+                                query.addParameter(file.getHeaders().get(i), value);
+                            }
+                            query.addToBatch();
                         }
                 );
             });
