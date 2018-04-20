@@ -1,7 +1,7 @@
-firstname;lastname;age;
-John;Doe;40;
-Johnny;Doe;30;
-Jane;Doe;25;
-Jon;Doe;12;
-Joshua;Doe;66;
-Don;Joe;34;
+firstname;lastname;age;what;
+John;Doe;40;1.1;
+Johnny;Doe;30;2.2;
+Jane;Doe;25;3.3;
+Jon;Doe;12;4.4;
+Joshua;Doe;66;5.5;
+Don;Joe;34;6.6;
