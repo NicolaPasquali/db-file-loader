@@ -30,7 +30,7 @@ public class CSVFileLoader extends AbstractFileLoader {
 
         this.basePath = basePath;
         initializeFiles(filesName);
-        this.sql2o = new Sql2o("jdbc:postgresql://localhost:5432/test", "test", "test");
+        this.sql2o = new Sql2o("jdbc:postgresql://localhost:5432/test?relaxAutoCommit=true", "test", "test");
         this.simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
@@ -51,8 +51,8 @@ public class CSVFileLoader extends AbstractFileLoader {
     }
 
     public void loadDataIntoDatabase() {
-        try (Connection con = sql2o.beginTransaction()) {
-            files.forEach(file -> {
+        files.forEach(file -> {
+            try (Connection con = sql2o.beginTransaction()) {
                 String sql = createQueryFromFile(file);
                 final Query query = con.createQuery(sql);
 
@@ -67,8 +67,9 @@ public class CSVFileLoader extends AbstractFileLoader {
                 );
                 query.executeBatch();
                 con.commit();
-            });
-        }
+                con.close();
+            }
+        });
     }
 
     private String createQueryFromFile(CSVFile file) {
@@ -93,7 +94,7 @@ public class CSVFileLoader extends AbstractFileLoader {
         try {
             return simpleDateFormat.parse(record.get(i));
         } catch (Exception ex) {
-            System.out.println("Not a date");
+            // Nothing to do here...
         }
 
         return value;
