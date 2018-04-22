@@ -2,3 +2,6 @@
 .idea
 test-files/LOGGER
 target/
+out/
+target/
+logs/
