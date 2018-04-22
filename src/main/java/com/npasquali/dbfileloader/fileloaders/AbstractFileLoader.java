@@ -11,16 +11,14 @@ import java.io.FileReader;
  */
 public abstract class AbstractFileLoader {
     protected Logger logger;
-    protected FileReader fileReader;
     protected String basePath;
 
     public String assertThatFileExists(final String fileName) throws FileNotFoundException {
         logger.debug("Checking if " + fileName + " file exists");
 
         String pathToFile = buildPathToFile(fileName);
-        System.out.println(pathToFile);
 
-        final File file = new File(pathToFile);
+        File file = new File(pathToFile);
         if (!(file.exists() && file.isFile())) {
             throw new FileNotFoundException("Could not find " + fileName + " in " + basePath);
         }
@@ -37,9 +35,5 @@ public abstract class AbstractFileLoader {
 
     public String getBasePath() {
         return basePath;
-    }
-
-    public void setBasePath(String basePath) {
-        this.basePath = basePath;
     }
 }

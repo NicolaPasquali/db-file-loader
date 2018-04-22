@@ -16,19 +16,14 @@ import java.util.StringTokenizer;
  * @author Nicola Pasquali
  */
 public class CSVParser {
-    private Logger logger;
-    private CSVFileBuilder csvFileBuilder;
-
     public CSVParser() {
-        logger = Logger.getLogger(CSVParser.class);
-        csvFileBuilder = new CSVFileBuilder();
     }
 
     public CSVFile createCSVFile(String fileName, String path) {
         return createCSVFile(fileName, new File(path), ";");
     }
 
-    public CSVFile createCSVFile(String fileName, File file, String separator) {
+    private CSVFile createCSVFile(String fileName, File file, String separator) {
         CSVFileBuilder csvFileBuilder = new CSVFileBuilder()
                 .withName(fileName.substring(0, fileName.indexOf('.')));
 
@@ -60,7 +55,7 @@ public class CSVParser {
         return null;
     }
 
-    public List<String> getHeader(String stringHeaders, String separator) {
+    private List<String> getHeader(String stringHeaders, String separator) {
         if (stringHeaders != null) {
             StringTokenizer tokenizer = new StringTokenizer(stringHeaders, separator);
             List<String> headers = Lists.newArrayList();
