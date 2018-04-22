@@ -29,7 +29,7 @@ public class CSVFileLoaderTest {
     }
 
     @Test
-    public void shouldFindFile() {
+    public void shouldFindFileAndReturnCorrectPath() {
         try {
             String pathToFile = csvFileLoader.assertThatFileExists("test.csv");
             Assert.assertEquals(csvFileLoader.getBasePath() + "/test.csv", pathToFile);

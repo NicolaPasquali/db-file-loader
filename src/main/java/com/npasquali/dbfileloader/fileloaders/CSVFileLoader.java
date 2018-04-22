@@ -45,16 +45,16 @@ public class CSVFileLoader extends AbstractFileLoader {
             String fullPath = assertThatFileExists(fileName);
             files.add(csvParser.createCSVFile(fileName, fullPath));
         } catch (FileNotFoundException e) {
-            // TODO Find a better way to handle this
-            System.out.println("Not found");
+            System.out.printf("%s not found\n", fileName);
         }
     }
 
     public void loadDataIntoDatabase() {
         files.forEach(file -> {
             try (Connection con = sql2o.beginTransaction()) {
+                System.out.printf("Loading %s into database", file.getName());
                 String sql = createQueryFromFile(file);
-                final Query query = con.createQuery(sql);
+                Query query = con.createQuery(sql);
 
                 file.getRecords().forEach(record -> {
                             for (int index = 0; index < file.getHeaders().size(); index++) {
