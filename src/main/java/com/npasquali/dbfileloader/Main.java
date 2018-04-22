@@ -11,7 +11,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         List<String> files = Lists.newArrayList();
-        files.add("test.csv");
+        files.add("people.csv");
 
         CSVFileLoader csvFileLoader = new CSVFileLoader("test-files", files);
         csvFileLoader.loadDataIntoDatabase();

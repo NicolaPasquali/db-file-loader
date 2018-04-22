@@ -24,12 +24,13 @@ public class CSVParser {
         csvFileBuilder = new CSVFileBuilder();
     }
 
-    public CSVFile createCSVFile(String path) {
-        return createCSVFile(new File(path), ";");
+    public CSVFile createCSVFile(String fileName, String path) {
+        return createCSVFile(fileName, new File(path), ";");
     }
 
-    public CSVFile createCSVFile(File file, String separator) {
-        CSVFileBuilder csvFileBuilder = new CSVFileBuilder();
+    public CSVFile createCSVFile(String fileName, File file, String separator) {
+        CSVFileBuilder csvFileBuilder = new CSVFileBuilder()
+                .withName(fileName.substring(0, fileName.indexOf('.')));
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             List<List<String>> records = Lists.newArrayList();
@@ -70,22 +71,4 @@ public class CSVParser {
         }
         return null;
     }
-
-//    public List<Map<String, String>> getRecords(File file, String separator, List<String> headers) {
-//        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
-//            bufferedReader.skip(1);
-//            String record = bufferedReader.readLine();
-//            if (record != null) {
-//                StringTokenizer tokenizer = new StringTokenizer(record, separator);
-//                Map<String, String> recordMap = Maps.newHashMap();
-//                while (tokenizer.hasMoreElements()) {
-//                    recordMap.put("", tokenizer.nextToken());
-//                }
-//                return recordMap;
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 }

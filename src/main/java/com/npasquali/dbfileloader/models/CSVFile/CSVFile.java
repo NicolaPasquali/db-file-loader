@@ -6,12 +6,18 @@ import java.util.List;
  * @author Nicola Pasquali
  */
 public class CSVFile {
+    private String name;
     private List<String> headers;
     private List<List<String>> records;
 
-    public CSVFile(List<String> headers, List<List<String>> records) {
+    public CSVFile(String name, List<String> headers, List<List<String>> records) {
+        this.name = name;
         this.headers = headers;
         this.records = records;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public List<String> getHeaders() {

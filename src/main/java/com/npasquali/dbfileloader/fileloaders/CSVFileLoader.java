@@ -11,6 +11,7 @@ import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,8 @@ public class CSVFileLoader extends AbstractFileLoader {
     private CSVParser csvParser;
     private List<CSVFile> files;
     private Sql2o sql2o;
+    private SimpleDateFormat simpleDateFormat;
+
 
     public CSVFileLoader(String basePath, List<String> filesName) {
         logger = Logger.getLogger(CSVFileLoader.class);
@@ -28,6 +31,7 @@ public class CSVFileLoader extends AbstractFileLoader {
         this.basePath = basePath;
         initializeFiles(filesName);
         this.sql2o = new Sql2o("jdbc:postgresql://localhost:5432/test", "test", "test");
+        this.simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
     private void initializeFiles(List<String> filesName) {
@@ -39,7 +43,7 @@ public class CSVFileLoader extends AbstractFileLoader {
     private void createAndAddCSVFile(String fileName) {
         try {
             String fullPath = assertThatFileExists(fileName);
-            files.add(csvParser.createCSVFile(fullPath));
+            files.add(csvParser.createCSVFile(fileName, fullPath));
         } catch (FileNotFoundException e) {
             // TODO Find a better way to handle this
             System.out.println("Not found");
@@ -68,7 +72,9 @@ public class CSVFileLoader extends AbstractFileLoader {
     }
 
     private String createQueryFromFile(CSVFile file) {
-        return new StringBuilder("INSERT INTO people (")
+        return new StringBuilder("INSERT INTO ")
+                .append(file.getName())
+                .append(" (")
                 .append(StringUtils.join(file.getHeaders(), ","))
                 .append(") VALUES (")
                 .append(StringUtils.join(file.getHeaders().stream().map(header -> ":" + header)
@@ -79,10 +85,17 @@ public class CSVFileLoader extends AbstractFileLoader {
 
     private Object castObject(List<String> record, int i, Object value) {
         if (NumberUtils.isDigits(record.get(i))) {
-            value = Integer.valueOf(record.get(i));
+            return Integer.valueOf(record.get(i));
         } else if (NumberUtils.isNumber(record.get(i))) {
-            value = Double.valueOf(record.get(i));
+            return Double.valueOf(record.get(i));
         }
+
+        try {
+            return simpleDateFormat.parse(record.get(i));
+        } catch (Exception ex) {
+            System.out.println("Not a date");
+        }
+
         return value;
     }
 }

@@ -6,8 +6,14 @@ import java.util.List;
  * @author Nicola Pasquali
  */
 public class CSVFileBuilder {
+    private String name;
     private List<String> headers;
     private List<List<String>> records;
+
+    public CSVFileBuilder withName(String name) {
+        this.name = name;
+        return this;
+    }
 
     public CSVFileBuilder withHeaders(List<String> headers) {
         this.headers = headers;
@@ -20,6 +26,6 @@ public class CSVFileBuilder {
     }
 
     public CSVFile build() {
-        return new CSVFile(headers, records);
+        return new CSVFile(name, headers, records);
     }
 }
