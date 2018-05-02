@@ -17,9 +17,13 @@ public class Main {
                 .loadDataIntoDatabase();
     }
 
+    // Returns a list containing all the files' name found in the "files-to-load" directory
     private static List<String> listFiles() {
+        // Select the folder
         File folder = new File("files-to-load");
+        // List all the files in the folder ending with .csv
         File[] files = folder.listFiles((dir, name) -> name.endsWith(".csv"));
+        // Create the list of names from the array of files
         return Arrays
                 .stream(Objects.requireNonNull(files))
                 .map(File::getName)
